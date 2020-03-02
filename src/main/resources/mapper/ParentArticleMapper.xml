@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ParentArticleDao">
+    <resultMap type="ParentArticle" id="articleResultMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+        <result property="englishName" column="english_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="articleResultMap">
+        select id,title from t_parent_article
+        where id=#{id}
+        and is_delete = 0
+    </select>
+
+    <select id="searchParentArticle" resultMap="articleResultMap">
+        select * from t_parent_article
+        <if test="keyword!=null and keyword != ''">
+            where title like CONCAT('%',#{keyword},'%')
+            and is_delete = 0
+        </if>
+        <if test="keyword == null or keyword == ''">
+            where is_delete = 0
+        </if>
+            ORDER BY id
+    </select>
+
+    <update id="updateSelective" parameterType="com.pojo.ParentArticle">
+        UPDATE t_parent_article
+        <set>
+            <if test="title!=null and title != ''">
+                title = #{title},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="del" parameterType="com.pojo.ParentArticle">
+        UPDATE t_parent_article
+        SET  is_delete = 1
+        WHERE id = #{id}
+    </update>
+
+</mapper>

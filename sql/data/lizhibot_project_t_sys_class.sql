@@ -1,1 +1,0 @@
-INSERT INTO lizhibot_project.t_sys_class (grade, class, className, teacherID) VALUES (2013, 3, '计算机组装与维修', 8001);
